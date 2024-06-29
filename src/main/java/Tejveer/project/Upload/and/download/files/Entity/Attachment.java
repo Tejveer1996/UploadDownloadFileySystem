@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -23,6 +23,12 @@ public class Attachment {
     @Lob
     @Column(columnDefinition = "longblob")
     private byte[] data;
+
+   @OneToMany
+    private List<User> sharedWith = new ArrayList<>();
+
+
+
 
     public Attachment(String fileName, String fileType, byte[] data) {
         this.fileName = fileName;
