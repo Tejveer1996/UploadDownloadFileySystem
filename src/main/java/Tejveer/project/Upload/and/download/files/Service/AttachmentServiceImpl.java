@@ -21,15 +21,30 @@ public class AttachmentServiceImpl implements AttachmentService{
     @Override
     public Attachment saveAttachment(MultipartFile file) throws Exception {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String version = file.getName()+ fileName.length() + file.hashCode();
+
         try {
             Attachment attachment = new Attachment(fileName,
                                        file.getContentType(),
                                        file.getBytes());
+            attachment.setVersion(version);
             return  attachmentRepository.save(attachment);
         } catch (Exception e) {
             throw new Exception("Could not save file : "+fileName);
         }
     }
+
+
+    public Attachment getFileByVersion(String fileName, String version) {
+        return attachmentRepository.findByFileNameAndVersion(fileName, version)
+                .orElseThrow(() -> new RuntimeException("File not found with name " + fileName + " and version " + version));
+    }
+
+    public List<Attachment> getAllVersionsOfFile(String fileName) {
+        return attachmentRepository.findByFileName(fileName);
+    }
+
+
 
     @Override
     public Optional<Attachment> getAttachment(String fileId) throws Exception {

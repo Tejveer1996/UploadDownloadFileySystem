@@ -15,4 +15,6 @@ public interface AttachmentService {
     void shareAttachment(String attachmentId, List<String> userIds);
 
     List<Attachment> getSharedAttachments();
+
+    List<Attachment> getAllVersionsOfFile(String fileName);
 }

@@ -28,7 +28,7 @@ public class Attachment {
     private List<User> sharedWith = new ArrayList<>();
 
 
-
+    private String version;
 
     public Attachment(String fileName, String fileType, byte[] data) {
         this.fileName = fileName;

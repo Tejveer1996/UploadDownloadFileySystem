@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class AttachmentController {
@@ -49,6 +50,14 @@ public class AttachmentController {
                                     + "\"")
                     .body(new ByteArrayResource(attachment.get().getData()));
 
+    }
+    @GetMapping("/versions/{fileName}")
+    public ResponseEntity<List<String>> getAllVersions(@PathVariable String fileName) {
+        List<Attachment> versions = attachmentService.getAllVersionsOfFile(fileName);
+        List<String> versionNumbers = versions.stream()
+                .map(Attachment::getVersion)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(versionNumbers);
     }
 
     // Endpoint to share an attachment with users
